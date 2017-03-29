@@ -1,0 +1,44 @@
+body{
+	background: peru;
+}
+
+* {
+	border: 1px solid red;
+	margin: 10px;
+}
+
+/*selection de etiqueta*/
+header {
+	background: blue;
+}
+
+section {
+	background: purple;
+}
+
+/*selection descendente*/
+article h3 {
+	color: green;
+}
+
+/*selection de clase*/
+.title-a {
+	background: yellow;
+}
+
+.title-b {
+	background: salmon;
+}
+
+/*selection de id*/
+#header {
+	border: 3px solid black;
+}
+
+#portada {
+	border: 3px solid orange;
+}
+
+#guitarras {
+	border: 3px solid brown;
+}
