@@ -1,0 +1,166 @@
+Instalacion de Ruby on Rails
+
+https://gorails.com/setup/ubuntu/16.10
+
+Servidor de aplicacion? *Puma, unicorn? Webrik? Passenger.
+Motor de base de datos: mysql lite.
+
+Turbolinks:
+Alternativa crear "Single page application".
+Paginas interactivas sin recargar pagina.
+
+MVC - Modelo vista controlador
+
+Modelos:
+Componetes, actores de la applicacion.
+
+Controlador:
+Encargado de manejar peticiones HTTP y crear una respuesta adecuada.
+
+Vista:
+Representacion de logica con la que el usuario interactua.
+
+1 - Crear nuevo proyecto:
+rails new musicapp
+
+2 - Correr servidor
+rails server
+
+3 - Estructura de proyecto
+app : codigo relacionado a logica de aplicacion, guia rapida, donde esta todo
+app/assets: todos los archivos que se requieren para front-end (images,javascript,css)
+app/controllers: Contenido por default, manejan peticiones http, manipulacion, actualizacion de modelos
+app/helpers: Logicas que vamos a utilizar (reutilizar codigo)
+app/mailers: si utiliza envio de correo, ingresar logica aqui
+app/models: logica de aplicacion
+app/views: Lo que ve el usuario
+config/environments: development, production, test
+development: cada peticion a controlador recarga app por completo, mas lenta
+production: no pasa lo de desarrollo
+test: pruebas automatizadas
+config/inicializers: Codigo que se ejecuta al levantar servidor, configuraciones 
+config/database.yml: 
+config/routes.rb: rutas de app
+config/secrets.yml: informacion sensible
+db: base de datos
+lib: codigo de terceros, librerias de terceros
+log: Registro de acciones de la aplicacion que hicieron los usuarios
+public: archivos estaticos 404, 500, 422 (no se encuentra ruta), icono para esas paginas
+Gemfile: todas las gemas de app
+tipo de gema: 'saas': pre procesador de css
+uglifier: quitar espacion en blanco
+coffee-rails: preprocesador de javascript
+Turbolinks: single-page-application: se utiliza generalmente react, angular
+sdoc: documentacion
+byebyg: debuging
+web-console: permite hacer debug mediante una consola
+spring: recarga de codigo cuando editamos sin reiniciar servidor
+
+scafflod: andamio, esctructura, tecnica que permite dar a la app detalles en la bd.
+
+4) General andamio de pista
+rails generate scaffold track title:string album:string artist:string
+
+Correr en servidor
+rails s
+
+Migracion:
+bin/rails db:migrate RAILS_ENV=development
+
+class CreateTracks < ActiveRecord::Migration[5.0]
+  def change
+    create_table :tracks do |t|
+      t.string :title
+      t.string :album
+      t.string :artist
+
+      t.timestamps
+    end
+  end
+end
+
+5) Migrar:
+rake db:migrate
+
+Ver rutas:
+rake routes
+
+Clases con Mayuscula
+ActiveRecord: Capa que se encarga de conectar aplicacion con base de datos
+
+Base de datos:
+adapter: sqlite3
+
+Ubicacion:
+sqlite3 db/development.sqlite3
+
+Abrir base de datos: sqlite3 development.sqlite3 
+.tables = ver tablas
+
+cambiar base de datos:
+datapter: sqlite3 -> postgresql
+database: musicapp_development
+database: musicapp_test
+database: musicapp_production
+
+bundle install: instalamos gemas nuevas
+
+rake db:setup : crear base de datos a partir de archivos rails
+
+--
+Interaccion con base de datos: Active recods
+
+consola de aplciacion: rails console
+
+Track= Modelo
+Conectar con modelo: Track.connection
+Ver estructura de tabla: Track
+Contar: Track.count
+Seleccinar primer elemento: Track.first / Ultimo: Track.las
+Agregar: Track.create title: 'Despacito', artist: 'Daddy Yankke', album: 'Trap'
+cancion = Track.new
+cancion.title = 'B'
+cancion.save
+
+Ver todos los registros:
+Track.all
+canciones = Track.all
+Ver primera cancion:
+canciones[0]
+
+Create: Crea y guarda en la base de datos
+New: Crea y no guarda en la base de datos
+
+Crear varios registros:
+10.times do
+	Track.create title:'Ella y yo', album:'Illuminati', artist:'Muchos'
+end
+
+Buscar registros:
+Track.find NUMERO ELEMENTO
+Track.find 16
+
+Buscar por grupos: Regresa listado de elementos
+canciones = Track.where title: 'Ella y yo'
+
+Buscar por atributo, retorna un elemento
+Track.fin_by title: 'cancion'
+
+cancion = Track.fin_by title: 'cancion'
+
+Borrar elemetos de base de datos:
+canciones = Track.where title 'Ella y yo'
+cancion = canciones.last
+cancion.destroy
+canciones.destroy_all
+
+Delete vs destroy:
+Destroy all : verifica asociaciones con otros modelos
+Destroy: Verifica
+Delete: No toma validaciones en cuenta ni asociaciones
+
+Create : crea obj ruby y guarda en la bd
+New: Crea pero no guarda en base de datos
+
+Se puede hacer busqedas con like
+modelo.save! : Guardan a la base de datos, diferencia save : retorna true/false, save! validaciones retorna excepcion
