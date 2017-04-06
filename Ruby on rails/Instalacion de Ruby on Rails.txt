@@ -164,3 +164,127 @@ New: Crea pero no guarda en base de datos
 
 Se puede hacer busqedas con like
 modelo.save! : Guardan a la base de datos, diferencia save : retorna true/false, save! validaciones retorna excepcion
+
+Creación de modelos sin uso de scaffold:
+
+Listas de reproduccion manualmente:
+Editor de texto: gvim
+
+1) Crear modelo - archivo /models/playlist.rb
+Playlist ereda de activerecord
+
+Rails 4: class Playlist < ApplicationRecord::Base
+Rails 5: class Playlist < ApplicationRecord
+end
+
+2) Crear conexion con base de datos
+rails console
+
+Playlist.connection
+
+rails generator : ver generadores
+
+3) Generar migracion a base de datos
+Consola: rails generate migration CreatePlaylists
+
+Se crarea migration en: db/migrate/
+
+4) Editar migration db
+
+class CreatePlaylists < ActiveRecord::Migration[5.0]
+  def change
+    create_table :playlists do |t|
+    	t.string :name
+    	t.integer :number_of_votes
+
+    	t.timestamps
+    end
+  end
+end
+
+5) Correr migracion
+rake db:migrate:status
+rake db:migrate
+
+rails console
+Playlist.connection
+Playlist
+
+6) Crear routes
+config/routes.rb
+
+agregar playlist:
+resources :playlists
+
+Validar: rake routes
+
+7) Crear controlador
+rails g / rails generate
+rails generate controller playlists
+
+Se crean los archivos: 
+playlist_controller.rb
+app/views/playlists/unit_test
+app/helpers/playlists_helper.rb
+app/assets/javascripts/playlists.coffee
+app/assets/stylesheets/playlists.scss
+
+ANOTAR DE QUE HEREDA CADA UNO
+route
+controller
+models
+
+8) Actino index
+
+Extra:
+rake db:migrate:status -Ver estado de base de datos
+rake db:reset : Resetear base de datos
+recargar consola: reload!
+
+9) Combinando modelos con controladores
+
+playlist_controller.rb
+
+Agregar index
+
+class PlaylistsController < ApplicationController
+	def index
+	end
+end
+
+Crear archivo de vista:
+/views/playlist/index.html.erb
+
+10) Crear formularoios para modelos
+/views/playlist/index.html.erb
+
+<h1>Listado de listas de reproduccion</h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Number of votes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @playlists.each do |playlist| %>
+			<tr>
+				<td><%= playlist.name %></td>
+				<td><%= playlist.number_of_votes %></td>
+			</tr>	
+		<% end %>
+	</tbody>
+</table>
+
+Crear una lista: Playlist.create name:'Sangre Nueva', number_of_votes:'20'
+
+Agregamos SHOW
+controller:
+	def show
+		@playlist = Playlist.find(params[:id])
+	end
+
+
+
+
