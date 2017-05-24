@@ -285,6 +285,131 @@ controller:
 		@playlist = Playlist.find(params[:id])
 	end
 
+---
+Tipo de relaciones:
+
+belongs_to
+Es una relacin uno a uno donde declaramos que cada instancia de un modelo pertenece a otro
+(Order - belongs_to :customer)
+
+has_one
+Es una relacion uno a uno donde declaramos que cada instancia de un modelo posee a otro
+Solo tiene uno del otro modelo (Suppliuer - has_one :account)
+
+has_many
+Indica una relacion de uno a muchos: que cada instancia de un modelo tiene cero o mas instancias del otro
+(Customer - has_many :orders)
+
+has_many :through
+"Especializacion"
+Es una relacion de muchos a muchos a traves de un tercer modelo
+No modelo intermedio
+
+class Physician < ApplicationRecord
+	has_many :appointments
+	has_many :patients, through: :appointments
+end
+
+class Appointment < ApplicationRecord
+	belongs_to :physician
+	belongs_to :patient
+end
+
+class Patient < ApplicationRecord
+	has_many :appointments
+	has_many :physicians, through: :appointments
+end
+
+
+has_one :through
+Es una relacion de pertenencia uno a uno a travez de un tercer modelo
+
+class Supplier < ApplicationRecord
+	has_one :account
+	has_one :account_history, through: :account
+end
+
+class Account < ApplicationRecord
+	belongs_to :supplier
+	has_one :account_history
+end
+
+class AccountHistory < ApplicationRecord
+	belongs_to :account
+end
+
+has_and_belongs_to_many
+Es una relacion de muchos a muchos sin modelo intermedio
+
+class Assembly < ApplicationRecord
+	has_and_belongs_to_many :parts
+end
+
+class Part < ApplicationRecord
+	has_and_belongs_to_many :assemblies
+end
+
+erb rails - modelado de base
+
+Modulos,metodos de autenticacion:
+
+Database authenticatable:
+* Mas clasico, primera manera
+* Manejar usuario y contraseña en base de datos
+* No las guarda en texto plano
+
+Omniauthable
+* gema que permite conectar con gemas de terceros (oAuth)
+
+Confirmable
+* Enviar email para verificar cuenta
+
+Recoverable
+* Permite si perdemos contraseña, recuperarla 
+
+Registerable
+* Permite hacer registro en el sistema con formulario
+
+Remembereable
+* Recordar session en el navegador
+
+Trackable
+* No es del lado del usuario
+* Registro de ultima ip
+
+Timeoutable
+* Recordar session en navegador durante "x" tiempo
+
+Validatable
+* Validar los correos y contraseña en el sistema
+
+Lockable
+* Bloqueable.
+* Inicio de session de correo por fuerza bruta.
+
+----------
+
+Guardar llaves secretas: sectrets.yml
+
+cancan - roles
+pudding - roles- accesos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
